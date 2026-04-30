@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Média</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  background: #111827;
+  padding: 35px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.header h1 {
+  color: #60a5fa;
+  font-size: 1.8em;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: #fff;
+}
+
+input:focus {
+  outline: none;
+  border-color: #60a5fa;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-calculate {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-clear {
+  background: #374151;
+  color: #ccc;
+}
+
+#resultado {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.resultado-box {
+  padding: 20px;
+  border-radius: 12px;
+  background: #1f2937;
+}
+
+.aprovado {
+  color: #22c55e;
+}
+
+.reprovado {
+  color: #ef4444;
+}
+
+.erro {
+  color: #f59e0b;
+}
+
+footer {
+  margin-top: 20px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>📊 Média Final</h1>
+  </div>
+
+  <form id="formulario">
+    <div class="form-group">
+      <input type="number" id="nota1" placeholder="Nota 1 (0 a 10)">
+    </div>
+
+    <div class="form-group">
+      <input type="number" id="nota2" placeholder="Nota 2 (0 a 10)">
+    </div>
+
+    <div class="form-group">
+      <input type="number" id="nota3" placeholder="Nota 3 (0 a 10)">
+    </div>
+
+    <div class="form-group">
+      <input type="number" id="nota4" placeholder="Nota 4 (0 a 10)">
+    </div>
+
+    <button type="button" class="btn-calculate" onclick="calcular()">Calcular</button>
+    <button type="button" class="btn-clear" onclick="limpar()">Limpar</button>
+  </form>
+
+  <div id="resultado"></div>
+
+  <footer>
+    Desenvolvido por Daniel Calil Demarqui Seidinger
+  </footer>
+</div>
+
+<script>
+function pegar(id){
+  return parseFloat(document.getElementById(id).value);
+}
+
+function calcular(){
+  const notas = [
+    pegar("nota1"),
+    pegar("nota2"),
+    pegar("nota3"),
+    pegar("nota4")
+  ];
+
+  const area = document.getElementById("resultado");
+
+  if (notas.some(n => isNaN(n) || n < 0 || n > 10)){
+    area.innerHTML = `<p class="erro">⚠️ Insira valores válidos entre 0 e 10</p>`;
+    return;
+  }
+
+  const media = notas.reduce((a,b)=>a+b,0)/4;
+  const aprovado = media >= 7;
+
+  area.innerHTML = `
+    <div class="resultado-box">
+      <h2>${media.toFixed(2)}</h2>
+      <p class="${aprovado ? "aprovado" : "reprovado"}">
+        ${aprovado ? "✅ Aprovado" : "❌ Reprovado"}
+      </p>
+    </div>
+  `;
+}
+
+function limpar(){
+  document.getElementById("formulario").reset();
+  document.getElementById("resultado").innerHTML = "";
+}
+</script>
+
+</body>
+</html>
